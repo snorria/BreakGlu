@@ -43,6 +43,7 @@ public class Paddle extends GraphicsObject{
 	}
 	
 	public void draw() {
+        Gdx.gl11.glColor4f(0f, 0f, 1f, 1f);
 		Gdx.gl11.glPushMatrix();
         Gdx.gl11.glTranslatef(this._pos.x, this._pos.y, 0);
         Gdx.gl11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, 4);

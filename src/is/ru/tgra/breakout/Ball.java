@@ -37,6 +37,9 @@ public class Ball extends GraphicsObject{
 	public void set_pos(Vector2 _pos) {
 		this._pos.set(_pos);
 	}
+	public void set_speed(Vector2 _speed) {
+		this._speed.set(_speed);
+	}
 	
 	public Ball() {
 		this._radius = 8;
@@ -46,6 +49,7 @@ public class Ball extends GraphicsObject{
 	}
 	
 	public void draw() {
+        Gdx.gl11.glColor4f(1f, 0f, 0f, 1f);
 		Gdx.gl11.glPushMatrix();
         Gdx.gl11.glTranslatef(this._pos.x, this._pos.y, 0);
         Gdx.gl11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 4, 4);
@@ -53,14 +57,22 @@ public class Ball extends GraphicsObject{
 	}
 	public void onFrame(float deltatime){
         this._pos.add(this._speed.x*deltatime,this._speed.y*deltatime);
-        if(this._pos.x > Gdx.graphics.getWidth()-this._radius*2)
+        if(this._pos.x > Gdx.graphics.getWidth()){
         	this._speed.mul(-1,1);
-        if(this._pos.x < 0)
+        	this._pos.sub(this._radius, 0);
+        }
+        if(this._pos.x < 0){
         	this._speed.mul(-1,1);
-        if(this._pos.y > Gdx.graphics.getHeight()-this._radius*2)
+        	this._pos.add(this._radius, 0);
+        }
+        if(this._pos.y > Gdx.graphics.getHeight()){
         	this._speed.mul(1,-1);
-        if(this._pos.y < 0)
+        	this._pos.sub(0, this._radius);
+        }
+        if(this._pos.y < 0){
         	this._speed.mul(1,-1);
+        	this._pos.add(0, this._radius);
+        }
         this.update();
 	}
 
