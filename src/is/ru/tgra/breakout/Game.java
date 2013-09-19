@@ -12,6 +12,7 @@ import org.lwjgl.opengl.GL11;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.BufferUtils;
 
@@ -32,7 +33,7 @@ public class Game implements ApplicationListener {
         
         float[] normalPaddle = new float[] {0,0, 0,this.paddle.get_height(),  this.paddle.get_width(),0,  this.paddle.get_width() ,this.paddle.get_height()};
         this.vertexBuffer.put(normalPaddle);
-        float[] normalBall = new float[] {0,0, 0,this.ball.get_radius(), this.ball.get_radius(),0,this.ball.get_radius(),this.ball.get_radius()};
+        float[] normalBall = new float[] {0,0, 0,this.ball.get_width(), this.ball.get_width(),0,this.ball.get_width(),this.ball.get_width()};
         this.vertexBuffer.put(normalBall);
         float[] normalBrick = new float[] {0,0,0,25,50,0,50,25};
         this.vertexBuffer.put(normalBrick);
@@ -153,21 +154,24 @@ public class Game implements ApplicationListener {
         Iterator<Brick> iter = bricks.iterator();
         while(iter.hasNext()){
         	Brick temp = iter.next();
-        	if(temp.get_Area().overlaps(this.ball.get_Area())){
-        		if(this.ball.get_pos().y <= temp.get_pos().y){
+        	Rectangle brickRect = temp.get_Area(); 
+        	Rectangle ballRect = this.ball.get_Area();
+        	if(brickRect.overlaps(ballRect)){
+        		if(ballRect.getY() <= temp.get_Area().getY()){
         			this.ball.changeDirection(1,-1);
-        			System.out.println("up");
-        		} else if(this.ball.get_pos().x > temp.get_pos().x+temp.get_Area().getWidth()-5){
+        			System.out.println("under");
+        		} else if(ballRect.getY()+2 >= brickRect.getY() +brickRect.getHeight()){
+        			this.ball.changeDirection(1,-1);
+        			System.out.println("over");	
+        		} else if(ballRect.getX()+2 > brickRect.getX()+temp.get_Area().getWidth()){
         			this.ball.changeDirection(-1,1);
         			System.out.println("right");
-        		} else if(this.ball.get_pos().y >= temp.get_pos().y +temp.get_Area().getHeight()){
-        			this.ball.changeDirection(1,-1);
-        			System.out.println("down");	
-        		} else if(this.ball.get_pos().x < temp.get_pos().x){
+        		}  else if(ballRect.getX() < brickRect.getX()){
         			this.ball.changeDirection(-1,1);
         			System.out.println("left");
         		}
-        		
+        		System.out.println(ballRect);
+        		System.out.println(brickRect);
         		/*Vector2 ballToBrick = this.ball.get_pos().tmp().sub(temp.get_pos());
         		ballToBrick.nor();
         		Vector2 brickFacing = new Vector2(0,1).nor();

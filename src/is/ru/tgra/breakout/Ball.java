@@ -7,16 +7,16 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Ball extends GraphicsObject{
-	private int _radius;
+	private int _width;
 	private Vector2 _pos;
 	private Vector2 _speed; //in pixels per second.
 	
-	public int get_radius() {
-		return _radius;
+	public int get_width() {
+		return _width;
 	}
 
-	public void set_radius(int _radius) {
-		this._radius = _radius;
+	public void set_width(int _width) {
+		this._width = _width;
 	}
 
 	public void move(float delta_x, float delta_y){
@@ -42,10 +42,10 @@ public class Ball extends GraphicsObject{
 	}
 	
 	public Ball() {
-		this._radius = 8;
+		this._width = 8;
 		this._pos = new Vector2(200,300);
 		this._speed = new Vector2(150,150);
-		this._rect = new Rectangle(this._pos.x,this._pos.y,this._radius*2,this._radius*2);
+		this._rect = new Rectangle(this._pos.x,this._pos.y,this._width,this._width);
 	}
 	
 	public void draw() {
@@ -59,26 +59,26 @@ public class Ball extends GraphicsObject{
         this._pos.add(this._speed.x*deltatime,this._speed.y*deltatime);
         if(this._pos.x > Gdx.graphics.getWidth()){
         	this._speed.mul(-1,1);
-        	this._pos.sub(this._radius, 0);
+        	this._pos.sub(this._width, 0);
         }
         if(this._pos.x < 0){
         	this._speed.mul(-1,1);
-        	this._pos.add(this._radius, 0);
+        	this._pos.add(this._width, 0);
         }
         if(this._pos.y > Gdx.graphics.getHeight()){
         	this._speed.mul(1,-1);
-        	this._pos.sub(0, this._radius);
+        	this._pos.sub(0, this._width);
         }
         if(this._pos.y < 0){
         	this._speed.mul(1,-1);
-        	this._pos.add(0, this._radius);
+        	this._pos.add(0, this._width);
         }
         this.update();
 	}
 
 	@Override
 	public void update() {
-		this._rect.set(this._pos.x,this._pos.y,this._radius*2,this._radius*2);
+		this._rect.set(this._pos.x,this._pos.y,this._width,this._width);
 	}
 
 
