@@ -12,6 +12,10 @@ public class Brick extends GraphicsObject {
 	private Vector2 _pos;
 	private BrickDelegate _delegate;
 	private int _life;
+	private Vector2 _bottomLeftPoint;
+	private Vector2 _bottomRightPoint;
+	private Vector2 _topLeftPoint;
+	private Vector2 _topRightPoint;
 	
 	
 	public Vector2 get_pos() {
@@ -30,8 +34,15 @@ public class Brick extends GraphicsObject {
 		this._pos = new Vector2(x,y);
 		this._rect = new Rectangle(this._pos.x,this._pos.y,this._width,this._height);
 		this._life = life;
+		this._bottomLeftPoint = new Vector2(x,y);
+		this._bottomRightPoint = new Vector2((x+this._width),y);
+		this._topLeftPoint = new Vector2(x,(y+this._height));
+		this._topRightPoint = new Vector2((x+this._width),(y+this._height));
 	}
 	
+	private float lineNormal(Vector2 P1, Vector2 P2){
+		return 0.0f;
+	}
 	public void draw() {
 		if(this._life == 1)
 			Gdx.gl11.glColor4f(1f, 0f, 0f, 1f);
