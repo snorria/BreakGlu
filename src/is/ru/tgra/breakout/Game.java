@@ -12,6 +12,8 @@ import org.lwjgl.opengl.GL11;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.BufferUtils;
@@ -22,6 +24,12 @@ public class Game implements ApplicationListener,BallDelegate,BrickDelegate {
     private Paddle paddle;
     private Ball ball;
     private ArrayList<Brick> bricks;
+    private int lives;
+    private int level;
+    //font stuff
+    private SpriteBatch spriteBatch;
+    private BitmapFont font;
+    
     
     @Override
     public void create() {
@@ -29,6 +37,9 @@ public class Game implements ApplicationListener,BallDelegate,BrickDelegate {
         //set up world coords.
         Gdx.gl11.glMatrixMode(GL11.GL_PROJECTION);
         Gdx.gl11.glLoadIdentity();
+        //font stuff
+        this.spriteBatch = new SpriteBatch();
+        this.font = new BitmapFont();
 
         // Set up a two-dimensional orthographic viewing region.
         //Gdx.glu.gluOrtho2D(Gdx.gl11, 0, Gdx.graphics.getWidth(), 0, Gdx.graphics.getHeight());
@@ -38,15 +49,21 @@ public class Game implements ApplicationListener,BallDelegate,BrickDelegate {
 
 
         // Set the Modelview matrix back.
-        Gdx.gl11.glMatrixMode(GL11.GL_MODELVIEW_MATRIX);    
-        this.paddle = new Paddle();
-        this.ball = new Ball(this);
-        this.bricks = new ArrayList<Brick>();
-        this.vertexBuffer = BufferUtils.newFloatBuffer(24);
+        Gdx.gl11.glMatrixMode(GL11.GL_MODELVIEW_MATRIX);
+        this.vertexBuffer = BufferUtils.newFloatBuffer(96);
         
-        float[] normalPaddle = new float[] {0,0, 0,this.paddle.get_height(),  this.paddle.get_width(),0,  this.paddle.get_width() ,this.paddle.get_height()};
+        
+        float[] normalPaddle = new float[] {0,0, 0,10,  75,0,  75 ,10};
         this.vertexBuffer.put(normalPaddle);
-        float[] normalBall = new float[] {0,0, 0,this.ball.get_width(), this.ball.get_width(),0,this.ball.get_width(),this.ball.get_width()};
+        //circle
+        float[] normalBall = new float[80];
+        double pi = Math.PI;
+        int s = 0;
+        for (double i = 0; i<2 *pi;i += pi/20){
+        	normalBall[s++] = (float)Math.cos(i);
+        	normalBall[s++] = (float)Math.sin(i);
+        }
+        //float[] normalBall = new float[] {0,0, 0,8, 8,0,8,8};
         this.vertexBuffer.put(normalBall);
         float[] normalBrick = new float[] {0,0,0,25,50,0,50,25};
         this.vertexBuffer.put(normalBrick);
@@ -59,33 +76,57 @@ public class Game implements ApplicationListener,BallDelegate,BrickDelegate {
         // Select clear color for the screen.
         Gdx.gl11.glClearColor(.3f, .3f, .3f, 1f);
         
-        //load level
+        this.startGame();
+        
+    }
+    private void startGame(){
+    	
+    	this.level = 4;
+    	this.lives = 3;
+        this.paddle = new Paddle();
+        this.ball = new Ball(this);
+        this.bricks = new ArrayList<Brick>();
+    	this.loadLevel();
+    }
+    private void loadLevel(){
+    	//load level
         try {
         	int x = 0;
         	int y = 374;
-			Scanner in = new Scanner(new FileReader("level0.txt"));
+			Scanner in = new Scanner(new FileReader("level"+this.level+".txt"));
 			while(in.hasNext()){
-				//System.out.println(in.next());
 				String temp = in.next();
 				for(int i = 0; i<10;i++){
-					if(temp.charAt(i) == 'x'){
-						Brick newbrick = new Brick(x,y,this);
+					if(temp.charAt(i) == '1'){
+						Brick newbrick = new Brick(x,y,this,1);
+						bricks.add(newbrick);
+					}
+					if(temp.charAt(i) == '2'){
+						Brick newbrick = new Brick(x,y,this,2);
+						bricks.add(newbrick);
+					}
+					if(temp.charAt(i) == '3'){
+						Brick newbrick = new Brick(x,y,this,3);
+						bricks.add(newbrick);
+					}
+					if(temp.charAt(i) == '4'){
+						Brick newbrick = new Brick(x,y,this,4);
+						bricks.add(newbrick);
+					}
+					if(temp.charAt(i) == '5'){
+						Brick newbrick = new Brick(x,y,this,5);
 						bricks.add(newbrick);
 					}
 					x+=51;
 				}
 				x = 0;
 				y -= 26;
-				/*if(in.next() == "x"){
-					System.out.println("brick:("+x+","+y+")");
-				}*/
 			}
 			in.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
     }
 
     @Override
@@ -103,11 +144,19 @@ public class Game implements ApplicationListener,BallDelegate,BrickDelegate {
         Gdx.gl11.glClear(GL11.GL_COLOR_BUFFER_BIT);
         Gdx.gl11.glMatrixMode(GL11.GL_MODELVIEW);
         Gdx.gl11.glLoadIdentity();
+        
+        this.spriteBatch.begin();
+		font.setColor(1.0f, 1.0f, 1.0f, 1f);
+		font.draw(this.spriteBatch, String.format("Lives: %d Level: %d",this.lives,this.level), 10, 20);
+		this.spriteBatch.end();
+
+        Gdx.gl11.glVertexPointer(2, GL11.GL_FLOAT, 0, this.vertexBuffer);
         this.paddle.draw();
         this.ball.draw();
         for (Brick b : bricks) {
 			b.draw();
 		}
+        
     }
     
     private void update(){
@@ -220,8 +269,8 @@ public class Game implements ApplicationListener,BallDelegate,BrickDelegate {
 	        			
 	        		}*/
 	        		temp.hit();
+	        		break;
 	        		//iter.remove();
-	        		
 	        	}
 	        }
         }
@@ -243,7 +292,7 @@ public class Game implements ApplicationListener,BallDelegate,BrickDelegate {
         Gdx.gl11.glLoadIdentity();
 
         // Set up a two-dimensional orthographic viewing region.
-        Gdx.glu.gluOrtho2D(Gdx.gl11, 0, 510, 0, 400);
+        //Gdx.glu.gluOrtho2D(Gdx.gl11, 0, 510, 0, 400);
 
         // Set up affine transformation of x and y from world coordinates to window coordinates
         Gdx.gl11.glViewport(0, 0, width, height);
@@ -256,16 +305,33 @@ public class Game implements ApplicationListener,BallDelegate,BrickDelegate {
     public void resume() {
         // TODO Auto-generated method stub
     }
+    
+    public void gameOver() {
+    	
+    }
 
 	@Override
 	public void dead(Brick b) {
 		this.bricks.remove(b);
-		
+		if(this.bricks.isEmpty()){
+			this.level++;
+			this.loadLevel();
+			this.ball = new Ball(this);
+		}
 	}
 
 	@Override
 	public void ballDead() {
 		//GameOver
-		System.out.println("YOU LOSE!");
+		this.lives--;
+		if(this.lives>0){
+			System.out.println("YOU LOST A LIFE");
+			this.ball = new Ball(this);
+		}
+		else{
+			System.out.println("YOU LOSE");
+			this.gameOver();
+		}
 	}
+	
 }

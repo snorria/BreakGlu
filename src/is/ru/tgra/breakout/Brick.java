@@ -11,6 +11,8 @@ public class Brick extends GraphicsObject {
 	private int _height;
 	private Vector2 _pos;
 	private BrickDelegate _delegate;
+	private int _life;
+	
 	
 	public Vector2 get_pos() {
 		return _pos;
@@ -21,19 +23,29 @@ public class Brick extends GraphicsObject {
 		this._pos = new Vector2(0,0);
 		this._rect = new Rectangle(this._pos.x,this._pos.y,this._width,this._height);
 	}
-	public Brick(int x, int y,BrickDelegate delegate){
+	public Brick(int x, int y,BrickDelegate delegate,int life){
 		this._delegate = delegate;
 		this._width = 50;
 		this._height = 25;
 		this._pos = new Vector2(x,y);
 		this._rect = new Rectangle(this._pos.x,this._pos.y,this._width,this._height);
+		this._life = life;
 	}
 	
 	public void draw() {
-        Gdx.gl11.glColor4f(1f, 0f, 1f, 1f);
+		if(this._life == 1)
+			Gdx.gl11.glColor4f(1f, 0f, 0f, 1f);
+		else if(this._life == 2)
+			Gdx.gl11.glColor4f(0f, 1f, 0f, 1f);
+		else if(this._life == 3)
+			Gdx.gl11.glColor4f(0f, 0f, 1f, 1f);
+		else if(this._life == 4)
+			Gdx.gl11.glColor4f(0f, 1f, 1f, 1f);
+		else if(this._life == 5)
+			Gdx.gl11.glColor4f(1f, 1f, 0f, 1f);
 		Gdx.gl11.glPushMatrix();
         Gdx.gl11.glTranslatef(this._pos.x, this._pos.y, 0);
-        Gdx.gl11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 8, 4);
+        Gdx.gl11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 44, 4);
         Gdx.gl11.glPopMatrix(); 
 	}
 	
@@ -43,7 +55,9 @@ public class Brick extends GraphicsObject {
 		
 	}
 	public void hit() {
-		this._delegate.dead(this);
+		this._life--;
+		if(this._life==0)
+			this._delegate.dead(this);
 	}
 	
 

@@ -65,7 +65,8 @@ public class Ball extends GraphicsObject{
         Gdx.gl11.glColor4f(1f, 0f, 0f, 1f);
 		Gdx.gl11.glPushMatrix();
         Gdx.gl11.glTranslatef(this._pos.x, this._pos.y, 0);
-        Gdx.gl11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 4, 4);
+        Gdx.gl11.glScalef(5.0f, 5.0f, 5.0f);
+        Gdx.gl11.glDrawArrays(GL11.GL_TRIANGLE_FAN, 4, 40);
         Gdx.gl11.glPopMatrix();
         
         
