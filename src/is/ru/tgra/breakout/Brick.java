@@ -10,6 +10,7 @@ public class Brick extends GraphicsObject {
 	private int _width;
 	private int _height;
 	private Vector2 _pos;
+	private BrickDelegate _delegate;
 	
 	public Vector2 get_pos() {
 		return _pos;
@@ -20,7 +21,8 @@ public class Brick extends GraphicsObject {
 		this._pos = new Vector2(0,0);
 		this._rect = new Rectangle(this._pos.x,this._pos.y,this._width,this._height);
 	}
-	public Brick(int x, int y){
+	public Brick(int x, int y,BrickDelegate delegate){
+		this._delegate = delegate;
 		this._width = 50;
 		this._height = 25;
 		this._pos = new Vector2(x,y);
@@ -40,5 +42,9 @@ public class Brick extends GraphicsObject {
 		// TODO Auto-generated method stub
 		
 	}
+	public void hit() {
+		this._delegate.dead(this);
+	}
+	
 
 }

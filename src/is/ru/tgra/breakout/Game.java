@@ -16,7 +16,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.BufferUtils;
 
-public class Game implements ApplicationListener {
+public class Game implements ApplicationListener,BallDelegate,BrickDelegate {
     // Vertex buffer.
     private FloatBuffer vertexBuffer = null;
     private Paddle paddle;
@@ -40,7 +40,7 @@ public class Game implements ApplicationListener {
         // Set the Modelview matrix back.
         Gdx.gl11.glMatrixMode(GL11.GL_MODELVIEW_MATRIX);    
         this.paddle = new Paddle();
-        this.ball = new Ball();
+        this.ball = new Ball(this);
         this.bricks = new ArrayList<Brick>();
         this.vertexBuffer = BufferUtils.newFloatBuffer(24);
         
@@ -62,14 +62,14 @@ public class Game implements ApplicationListener {
         //load level
         try {
         	int x = 0;
-        	int y = Gdx.graphics.getHeight();
+        	int y = 374;
 			Scanner in = new Scanner(new FileReader("level0.txt"));
 			while(in.hasNext()){
 				//System.out.println(in.next());
 				String temp = in.next();
 				for(int i = 0; i<10;i++){
 					if(temp.charAt(i) == 'x'){
-						Brick newbrick = new Brick(x,y);
+						Brick newbrick = new Brick(x,y,this);
 						bricks.add(newbrick);
 					}
 					x+=51;
@@ -219,7 +219,8 @@ public class Game implements ApplicationListener {
 	        		} else if (angle<315.0 && angle>225.0){
 	        			
 	        		}*/
-	        		iter.remove();
+	        		temp.hit();
+	        		//iter.remove();
 	        		
 	        	}
 	        }
@@ -242,7 +243,7 @@ public class Game implements ApplicationListener {
         Gdx.gl11.glLoadIdentity();
 
         // Set up a two-dimensional orthographic viewing region.
-        Gdx.glu.gluOrtho2D(Gdx.gl11, 0, 480, 0, 320);
+        Gdx.glu.gluOrtho2D(Gdx.gl11, 0, 510, 0, 400);
 
         // Set up affine transformation of x and y from world coordinates to window coordinates
         Gdx.gl11.glViewport(0, 0, width, height);
@@ -255,4 +256,16 @@ public class Game implements ApplicationListener {
     public void resume() {
         // TODO Auto-generated method stub
     }
+
+	@Override
+	public void dead(Brick b) {
+		this.bricks.remove(b);
+		
+	}
+
+	@Override
+	public void ballDead() {
+		//GameOver
+		System.out.println("YOU LOSE!");
+	}
 }

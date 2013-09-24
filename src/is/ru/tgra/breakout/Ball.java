@@ -3,6 +3,7 @@ package is.ru.tgra.breakout;
 import org.lwjgl.opengl.GL11;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -10,6 +11,7 @@ public class Ball extends GraphicsObject{
 	private int _width;
 	private Vector2 _pos;
 	private Vector2 _speed; //in pixels per second.
+	private BallDelegate _delegate;
 	
 	public int get_width() {
 		return _width;
@@ -47,7 +49,14 @@ public class Ball extends GraphicsObject{
 	
 	public Ball() {
 		this._width = 8;
-		this._pos = new Vector2(200,300);
+		this._pos = new Vector2(250,100);
+		this._speed = new Vector2(150,150);
+		this._rect = new Rectangle(this._pos.x,this._pos.y,this._width,this._width);
+	}
+	public Ball(BallDelegate delegate){
+		this._delegate = delegate;
+		this._width = 8;
+		this._pos = new Vector2(250,100);
 		this._speed = new Vector2(150,150);
 		this._rect = new Rectangle(this._pos.x,this._pos.y,this._width,this._width);
 	}
@@ -59,10 +68,11 @@ public class Ball extends GraphicsObject{
         Gdx.gl11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 4, 4);
         Gdx.gl11.glPopMatrix();
         
+        
 	}
 	public void onFrame(float deltatime){
         this._pos.add(this._speed.x*deltatime,this._speed.y*deltatime);
-        if(this._pos.x > 480){
+        if(this._pos.x > 510){
         	this._speed.mul(-1,1);
         	this._pos.sub(this._width, 0);
         }
@@ -70,13 +80,14 @@ public class Ball extends GraphicsObject{
         	this._speed.mul(-1,1);
         	this._pos.add(this._width, 0);
         }
-        if(this._pos.y > 320){
+        if(this._pos.y > 400){
         	this._speed.mul(1,-1);
         	this._pos.sub(0, this._width);
         }
         if(this._pos.y < 0){
-        	this._speed.mul(1,-1);
-        	this._pos.add(0, this._width);
+        	//this._speed.mul(1,-1);
+        	//this._pos.add(0, this._width);
+        	this._delegate.ballDead();
         }
         this.update();
 	}

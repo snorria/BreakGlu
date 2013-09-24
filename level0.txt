@@ -1,7 +1,6 @@
-__________
-__________
-__________
-_____xxxx_
+____x_____
+xxxxxxxxxx
+xxxxxxxxxx
+xxxxxxxxxx
+xxxxxxxxxx
 __xxxxxxx_
-____x_x_x_
-______x___

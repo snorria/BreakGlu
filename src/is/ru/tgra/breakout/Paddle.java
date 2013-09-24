@@ -51,10 +51,12 @@ public class Paddle extends GraphicsObject{
 	}
 	public void onFrame(float deltatime){
     	if(Gdx.input.isKeyPressed(Keys.RIGHT)){
-            this.move(SPEED*deltatime, 0);
+    		if(this._pos.x<440)
+    			this.move(SPEED*deltatime, 0);
         }
         if(Gdx.input.isKeyPressed(Keys.LEFT)){
-        	this.move(-SPEED*deltatime, 0);
+        	if(this._pos.x>0)
+        		this.move(-SPEED*deltatime, 0);
         }
         this.update();
 	}
