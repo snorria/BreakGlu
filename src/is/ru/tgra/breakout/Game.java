@@ -222,60 +222,8 @@ public class Game implements ApplicationListener,BallDelegate,BrickDelegate {
 	        Iterator<Brick> iter = bricks.iterator();
 	        while(iter.hasNext()){
 	        	Brick temp = iter.next();
-	        	//tests
 	        	if(temp.collisionWithBall(this.ball, delta))
 	        		break;
-	        	//
-	        	/*Rectangle brickRect = temp.get_Area(); 
-	        	Rectangle ballRect = this.ball.get_Area();
-	        	if(brickRect.overlaps(ballRect)){
-	        		if(this.ball.get_speed().x>0){
-	        			//ball going to the right.
-	        		}
-	        		else{
-	        			//ball going to the left.
-	        		}
-	        		if(this.ball.get_speed().y>0){
-	        			//ball going up.
-	        		}
-	        		else{
-	        			//ball going down.
-	        		}
-	        		if(ballRect.getY() <= temp.get_Area().getY()){
-	        			this.ball.changeDirection(1,-1);
-	        			System.out.println("under");
-	        		} else if(ballRect.getY()+2 >= brickRect.getY() +brickRect.getHeight()){
-	        			this.ball.changeDirection(1,-1);
-	        			System.out.println("over");	
-	        		} else if(ballRect.getX()+2 > brickRect.getX()+temp.get_Area().getWidth()){
-	        			this.ball.changeDirection(-1,1);
-	        			System.out.println("right");
-	        		}  else if(ballRect.getX() < brickRect.getX()){
-	        			this.ball.changeDirection(-1,1);
-	        			System.out.println("left");
-	        		}
-	        		System.out.println(ballRect);
-	        		System.out.println(brickRect);
-	        		/*Vector2 ballToBrick = this.ball.get_pos().tmp().sub(temp.get_pos());
-	        		ballToBrick.nor();
-	        		Vector2 brickFacing = new Vector2(0,1).nor();
-	        		
-	        		float angle = (float) Math.acos(ballToBrick.dot(brickFacing));
-	        		angle = angle*100;
-	        		System.out.println(angle);
-	        		if((angle<45.0 && angle>0.0) ||(angle>315.0 && angle <360.0)){
-	        			
-	        		} else if (angle<135.0 && angle>45.0){
-	        			
-	        		} else if (angle<225.0 && angle>135.0){
-	        			
-	        		} else if (angle<315.0 && angle>225.0){
-	        			
-	        		}
-	        		temp.hit();
-	        		break;
-	        		//iter.remove();
-	        	}*/
 	        }
         }
         //System.out.println(this.ball.get_pos());
@@ -311,7 +259,7 @@ public class Game implements ApplicationListener,BallDelegate,BrickDelegate {
     }
     
     public void gameOver() {
-    	
+    	this.startGame();
     }
 
 	@Override
