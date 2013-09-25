@@ -226,7 +226,9 @@ public class Game implements ApplicationListener,BallDelegate,BrickDelegate {
 	        		break;
 	        }
         }
-        //System.out.println(this.ball.get_pos());
+        if(Gdx.input.isKeyPressed(Keys.SPACE) && this.lives == 0){
+            this.startGame();
+        }
     }
     
     
@@ -259,7 +261,9 @@ public class Game implements ApplicationListener,BallDelegate,BrickDelegate {
     }
     
     public void gameOver() {
-    	this.startGame();
+    	this.ball.get_pos().set(250, 100);
+    	this.ball.get_speed().set(0, 0);
+    	//this.startGame();
     }
 
 	@Override
