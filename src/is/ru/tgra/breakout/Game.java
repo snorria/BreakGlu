@@ -14,7 +14,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.BufferUtils;
 
@@ -81,7 +80,7 @@ public class Game implements ApplicationListener,BallDelegate,BrickDelegate {
     }
     private void startGame(){
     	
-    	this.level = 0;
+    	this.level = 1;
     	this.lives = 3;
         this.paddle = new Paddle();
         this.ball = new Ball(this);
@@ -93,7 +92,7 @@ public class Game implements ApplicationListener,BallDelegate,BrickDelegate {
         try {
         	int x = 0;
         	int y = 374;
-			Scanner in = new Scanner(new FileReader("level"+this.level+".txt"));
+			Scanner in = new Scanner(new FileReader("level"+(this.level%5)+".txt"));
 			while(in.hasNext()){
 				String temp = in.next();
 				for(int i = 0; i<10;i++){

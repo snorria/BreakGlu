@@ -106,7 +106,7 @@ public class Brick extends GraphicsObject {
 		float d1 = distanceToLine(P1,P2,C);
 		Vector2 CnextFrame = new Vector2(C).add((b.get_speed().x*delta),(b.get_speed().y*delta));// b.get_middle().tmp().add();//miðja boltans í næsta frame.
 		float d2 = distanceToLine(P1,P2,CnextFrame);
-		float t = (float) (((float)b.get_radius()-d1)/(d2-d1));
+		float t = (float) (((float)(b.get_radius()*b.get_radius())-d1)/(d2-d1));
 		if(t>=0f && t<1f)
 			System.out.println("hit at t: "+t);
 		
