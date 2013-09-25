@@ -81,7 +81,7 @@ public class Game implements ApplicationListener,BallDelegate,BrickDelegate {
     }
     private void startGame(){
     	
-    	this.level = 4;
+    	this.level = 0;
     	this.lives = 3;
         this.paddle = new Paddle();
         this.ball = new Ball(this);
@@ -222,7 +222,11 @@ public class Game implements ApplicationListener,BallDelegate,BrickDelegate {
 	        Iterator<Brick> iter = bricks.iterator();
 	        while(iter.hasNext()){
 	        	Brick temp = iter.next();
-	        	Rectangle brickRect = temp.get_Area(); 
+	        	//tests
+	        	if(temp.collisionWithBall(this.ball, delta))
+	        		break;
+	        	//
+	        	/*Rectangle brickRect = temp.get_Area(); 
 	        	Rectangle ballRect = this.ball.get_Area();
 	        	if(brickRect.overlaps(ballRect)){
 	        		if(this.ball.get_speed().x>0){
@@ -267,11 +271,11 @@ public class Game implements ApplicationListener,BallDelegate,BrickDelegate {
 	        			
 	        		} else if (angle<315.0 && angle>225.0){
 	        			
-	        		}*/
+	        		}
 	        		temp.hit();
 	        		break;
 	        		//iter.remove();
-	        	}
+	        	}*/
 	        }
         }
         //System.out.println(this.ball.get_pos());

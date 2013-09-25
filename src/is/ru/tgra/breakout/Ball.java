@@ -46,6 +46,10 @@ public class Ball extends GraphicsObject{
 	{
 		return _width/2.0;
 	}
+	public Vector2 get_middle()
+	{
+		return new Vector2(this._pos.tmp().add(4f, 4f));
+	}
 	
 	public Ball() {
 		this._width = 8;
@@ -65,7 +69,7 @@ public class Ball extends GraphicsObject{
         Gdx.gl11.glColor4f(1f, 0f, 0f, 1f);
 		Gdx.gl11.glPushMatrix();
         Gdx.gl11.glTranslatef(this._pos.x, this._pos.y, 0);
-        Gdx.gl11.glScalef(5.0f, 5.0f, 5.0f);
+        Gdx.gl11.glScalef(4.0f, 4.0f, 4.0f);
         Gdx.gl11.glDrawArrays(GL11.GL_TRIANGLE_FAN, 4, 40);
         Gdx.gl11.glPopMatrix();
         
